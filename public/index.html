@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#0b1020"><title>KlepaGram</title>
+<style>
+:root{--tx:#10131a;--t2:#667085;--ac:#2a8cff;--gl:rgba(255,255,255,.42);--gb:rgba(255,255,255,.8);--sh:rgba(30,40,80,.2);--in:rgba(255,255,255,.6);--bg:#dfe8ff;--hl:rgba(255,255,255,.7)}
+@media(prefers-color-scheme:dark){:root{--tx:#f2f4f8;--t2:#9aa3b2;--gl:rgba(30,34,50,.5);--gb:rgba(255,255,255,.22);--sh:rgba(0,0,0,.55);--in:rgba(70,78,104,.55);--bg:#070a14;--hl:rgba(255,255,255,.28)}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:16px -apple-system,"SF Pro Text",Roboto,"Segoe UI",sans-serif;overflow:hidden}
+.orb{position:fixed;border-radius:50%;background:var(--c);filter:blur(70px);opacity:.65;animation:fl 14s ease-in-out infinite alternate}
+@keyframes fl{to{transform:translate(50px,70px) scale(1.2)}}
+.g{background:var(--gl);backdrop-filter:blur(26px) saturate(190%);-webkit-backdrop-filter:blur(26px) saturate(190%);border:1px solid var(--gb);box-shadow:0 10px 30px var(--sh),inset 0 1px 0 var(--hl),inset 0 -1px 0 rgba(255,255,255,.1)}
+.scr{position:fixed;inset:0;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);height:100dvh}
+.top{margin:8px 12px;border-radius:24px;padding:10px 16px;display:flex;align-items:center;gap:10px;min-height:52px}
+.top h1{margin:0;font-size:20px}
+#view{flex:1;overflow-y:auto;padding:4px 12px 120px}#view.a>*{animation:up .4s cubic-bezier(.2,.9,.3,1) both}
+@keyframes up{from{opacity:0;transform:translateY(18px)}}
+.row{display:flex;gap:12px;padding:10px;border-radius:20px;align-items:center;cursor:pointer;transition:background .2s,transform .15s}
+.row:active{transform:scale(.97);background:var(--gl)}
+.av{width:50px;height:50px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:19px;box-shadow:inset 0 2px 0 rgba(255,255,255,.4)}
+.mid{flex:1;min-width:0}.r1{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.r1 b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.r1 small,.tt small{color:var(--t2)}
+.pv{color:var(--t2);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+em{font-style:normal;background:var(--ac);color:#fff;border-radius:11px;min-width:22px;height:22px;padding:0 7px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.empty{text-align:center;padding:90px 30px;color:var(--t2);display:flex;flex-direction:column;gap:8px}.empty b{color:var(--tx);font-size:19px}
+input,textarea{width:100%;height:48px;border-radius:24px;border:1px solid var(--gb);background:var(--in);color:var(--tx);padding:0 18px;font:inherit;outline:0;margin-top:10px}
+input:focus{border-color:var(--ac)}
+.btn{width:100%;height:50px;margin-top:14px;border:0;border-radius:25px;background:var(--ac);color:#fff;font:600 16px inherit;font-family:inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 8px 20px rgba(42,140,255,.4);transition:transform .15s;cursor:pointer}
+.btn:active{transform:scale(.96)}.btn.s{background:var(--in);color:var(--tx);box-shadow:none;border:1px solid var(--gb)}.btn.d{background:#ff453a}
+.card,.card2{border-radius:32px;padding:20px;margin:6px 0}.card{width:min(380px,92vw);margin:auto}
+.seg{display:flex;gap:4px;padding:4px;border-radius:22px;background:var(--in)}
+.seg button{flex:1;height:38px;border:0;border-radius:18px;background:none;color:var(--t2);font:500 15px inherit;font-family:inherit;transition:.3s;cursor:pointer}
+.seg .on{background:var(--ac);color:#fff}
+.err{color:#ff453a;font-size:14px;min-height:20px;margin-top:8px}.hint{color:var(--t2);font-size:13px;text-align:center;margin:10px 20px}
+#auth,#splash{align-items:center;justify-content:center}
+#splash{position:fixed;inset:0;z-index:50;background:#070a14;display:flex;flex-direction:column;transition:opacity .6s}
+.logo{margin:0;font-size:40px;text-align:center}.logo span{display:inline-block;opacity:0;animation:pl .6s cubic-bezier(.34,1.56,.64,1) forwards}.logo span:nth-child(n+6){color:var(--ac)}
+@keyframes pl{from{opacity:0;transform:translateY(30px) scale(.6)}to{opacity:1}}
+#splash .logo{color:#fff;font-size:46px}.sub{text-align:center;color:var(--t2);margin:4px 0 16px}
+#tabs{position:fixed;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);height:68px;border-radius:34px;display:flex;padding:6px;z-index:5;max-width:520px;margin:0 auto}
+.ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:28px;background:var(--hl);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 3px 10px var(--sh);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+#tabs button{flex:1;border:0;background:none;color:var(--t2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:500 11px inherit;font-family:inherit;position:relative;z-index:1;transition:color .3s;cursor:pointer}
+#tabs svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#tabs .on{color:var(--ac)}#tabs .on svg{animation:pop .5s}@keyframes pop{0%{transform:scale(.6) rotate(-12deg)}60%{transform:scale(1.25)}100%{transform:none}}
+#tabs em{position:absolute;top:4px;left:calc(50% + 6px);height:18px;min-width:18px;font-size:11px;padding:0 5px;background:#ff453a}
+#chat{z-index:10;background:var(--bg);transform:translateX(105%);transition:transform .4s cubic-bezier(.2,.9,.3,1)}#chat.on{transform:none}
+.ib{width:38px;height:38px;border-radius:50%;border:1px solid var(--gb);background:var(--in);color:var(--ac);font-size:20px;cursor:pointer;flex:none}
+.tt{flex:1;min-width:0;display:flex;flex-direction:column}.tt b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#msgs{flex:1;overflow-y:auto;padding:8px 14px;display:flex;flex-direction:column;gap:5px}
+.m{max-width:80%;padding:8px 13px;border-radius:20px;background:var(--in);border:1px solid var(--gb);align-self:flex-start;animation:mi .3s cubic-bezier(.34,1.56,.64,1);word-break:break-word;white-space:pre-wrap}
+.m.me{align-self:flex-end;background:var(--ac);color:#fff;border-color:transparent}.m b{display:block;font-size:13px;color:var(--ac)}.m small{display:block;text-align:right;font-size:11px;opacity:.6}
+@keyframes mi{from{opacity:0;transform:scale(.8) translateY(10px)}}
+#foot{margin:8px 12px calc(env(safe-area-inset-bottom,0px) + 8px);border-radius:28px;padding:6px;display:flex;gap:6px;align-items:center;justify-content:center;color:var(--t2)}
+#foot input{margin:0;flex:1;border:0;background:none}#foot .btn{width:auto;margin:0;padding:0 22px}
+#sb{width:44px;height:44px;border-radius:50%;border:0;background:var(--ac);color:#fff;cursor:pointer;flex:none}
+#sb svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 14px);transform:translate(-50%,-150%);padding:12px 20px;border-radius:24px;z-index:99;transition:transform .4s cubic-bezier(.34,1.56,.64,1);max-width:90vw}#toast.on{transform:translate(-50%,0)}
+</style></head><body>
+<div class="orb" style="--c:#2a8cff;left:-90px;top:-60px;width:300px;height:300px"></div>
+<div class="orb" style="--c:#ff5fa2;right:-110px;top:35%;width:280px;height:280px;animation-delay:-6s"></div>
+<div class="orb" style="--c:#6ff0c4;left:15%;bottom:-130px;width:320px;height:320px;animation-delay:-11s"></div>
+<section id="auth" class="scr" hidden><div class="card g"><h1 class="logo" data-logo></h1><p class="sub">быстрый и красивый мессенджер</p>
+<div class="seg" id="aseg"><button class="on" data-m="login">Вход</button><button data-m="register">Регистрация</button></div>
+<input id="an" placeholder="Ваше имя" hidden><input id="au" placeholder="@юзернейм" autocapitalize="off" autocomplete="username"><input id="ap" type="password" placeholder="Пароль" autocomplete="current-password">
+<div class="err" id="ae"></div><button class="btn" id="ago">Войти</button></div></section>
+<section id="app" class="scr" hidden><div class="top g"><h1 id="ttl">Чаты</h1></div><main id="view"></main><nav id="tabs" class="g"><i class="ind"></i></nav></section>
+<section id="chat" class="scr"><div class="top g"><button class="ib" id="bk">‹</button><div id="chav"></div><div class="tt"><b id="ct"></b><small id="cs"></small></div><button class="ib" id="csh">⤴</button><button class="ib" id="cmn">⋯</button></div>
+<div id="msgs"></div><div id="foot" class="g"></div></section>
+<div id="splash"><h1 class="logo" data-logo></h1></div><div id="toast" class="g"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+document.querySelectorAll('[data-logo]').forEach(h=>h.innerHTML=[...'KlepaGram'].map((c,i)=>`<span style="animation-delay:${.2+i*.07}s">${c}</span>`).join(''));
+let ws,pend=new Map(),nid=1,me,chats=[],tab='chats',cur=null,tok=localStorage.getItem('kg_tok'),mode='login',ckind='group',booted=0;
+const T=[['chats','Чаты','M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z'],['search','Поиск','M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.3-4.3'],['create','Создать','M12 5v14M5 12h14'],['me','Профиль','M12 4a4 4 0 100 8 4 4 0 000-8zM4 21c0-4 4-6 8-6s8 2 8 6']];
+const fmt=t=>{const d=new Date(t);return d.toDateString()==new Date().toDateString()?d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString([],{day:'2-digit',month:'2-digit'})};
+const av=(t,id,big)=>`<div class="av" style="background:hsl(${(id*47)%360} 65% 52%);${big?'width:90px;height:90px;font-size:34px;margin:auto':''}">${esc([...(t||'?')][0]).toUpperCase()}</div>`;
+const ico=c=>c.type=='group'?'👥 ':c.type=='channel'?'📢 ':'';
+const unread=()=>chats.reduce((a,c)=>a+c.unread,0);
+let tt;function toast(s){const t=$('#toast');t.textContent=s;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2600)}
+function conn(){ws=new WebSocket((location.protocol=='https:'?'wss://':'ws://')+location.host);
+ ws.onopen=async()=>{if(tok){try{await auth('resume',{token:tok})}catch(e){tok=null;localStorage.removeItem('kg_tok');showAuth()}}else showAuth()};
+ ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.id){const p=pend.get(m.id);pend.delete(m.id);if(p)m.err?p[1](m.err):p[0](m)}else onEv(m)};
+ ws.onclose=()=>{pend.forEach(p=>p[1]('Нет связи'));pend.clear();if(me)toast('Нет связи, переподключаюсь…');setTimeout(conn,1500)}}
+const call=(t,d={})=>new Promise((ok,no)=>{if(ws.readyState!=1)return no('Нет связи');const id=nid++;pend.set(id,[ok,no]);ws.send(JSON.stringify({id,t,...d}))});
+setInterval(()=>ws&&ws.readyState==1&&call('ping').catch(()=>0),25000);
+async function auth(t,d){const r=await call(t,d);me=r.me;tok=r.token;localStorage.setItem('kg_tok',tok);chats=r.chats;enter()}
+function showAuth(){hideSplash();$('#auth').hidden=false}
+function hideSplash(){setTimeout(()=>{const s=$('#splash');s.style.opacity=0;setTimeout(()=>s.remove(),700)},2000-Math.min(2000,Date.now()-t0))}
+const t0=Date.now();
+function enter(){hideSplash();$('#auth').hidden=true;$('#app').hidden=false;if(!booted){booted=1;buildTabs();go('chats');openLink()}else{upd();if(tab=='chats')ren();if(cur)refreshCur()}}
+function buildTabs(){const n=$('#tabs');T.forEach(([k,l,p])=>{const b=document.createElement('button');b.dataset.k=k;b.innerHTML=`<svg viewBox="0 0 24 24"><path d="${p}"/></svg><span>${l}</span>`;b.onclick=()=>go(k);n.append(b)})}
+function upd(){const n=$('#tabs');n.querySelectorAll('button').forEach(b=>{b.className=b.dataset.k==tab?'on':'';const e=b.querySelector('em');if(e)e.remove();if(b.dataset.k=='chats'&&unread())b.insertAdjacentHTML('beforeend',`<em>${unread()}</em>`)});n.querySelector('.ind').style.transform=`translateX(${T.findIndex(t=>t[0]==tab)*100}%)`}
+function go(k){tab=k;$('#ttl').textContent=T.find(t=>t[0]==k)[1];upd();const v=$('#view');v.classList.remove('a');void v.offsetWidth;v.classList.add('a');ren()}
+function ren(){const v=$('#view');
+ if(tab=='chats')v.innerHTML=chats.length?chats.map(c=>`<div class="row" data-c="${c.id}">${av(c.title,c.peer||c.id)}<div class="mid"><div class="r1"><b>${ico(c)}${esc(c.title)}</b><small>${c.last?fmt(c.last.ts):''}</small></div><div class="r1"><span class="pv">${c.last?esc((c.type!='dm'?c.last.name+': ':'')+c.last.text):'Нет сообщений'}</span>${c.unread?`<em>${c.unread}</em>`:''}</div></div></div>`).join(''):`<div class="empty"><b>Пока пусто</b><span>Найди людей по @юзернейму во вкладке «Поиск» или создай группу и канал</span></div>`;
+ else if(tab=='search'){v.innerHTML=`<input id="q" placeholder="Поиск: @юзернейм, имя, группа, канал" autocapitalize="off"><div id="res"></div>`;let d;$('#q').oninput=e=>{clearTimeout(d);d=setTimeout(()=>doSearch(e.target.value),250)}}
+ else if(tab=='create'){v.innerHTML=`<div class="card2 g"><div class="seg" id="cseg"><button class="${ckind=='group'?'on':''}" data-k="group">Группа</button><button class="${ckind=='channel'?'on':''}" data-k="channel">Канал</button></div><input id="cn" placeholder="Название" maxlength="64"><input id="ch" placeholder="@юзернейм (необязательно)" autocapitalize="off"><div class="err" id="ce"></div><button class="btn" id="cgo">Создать</button></div><p class="hint">Если задать @юзернейм, группу или канал смогут найти в поиске и вступить по ссылке. В канале пишет только владелец.</p>`;
+  $('#cseg').onclick=e=>{const b=e.target.closest('button');if(!b)return;ckind=b.dataset.k;$('#cseg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b))};$('#cgo').onclick=doCreate}
+ else{v.innerHTML=`<div class="card2 g" style="text-align:center">${av(me.name,me.id,1)}<h2 style="margin:10px 0 0">${esc(me.name)}</h2><small style="color:var(--t2)">@${esc(me.username)}</small><input id="pn" value="${esc(me.name)}" placeholder="Имя"><input id="pu" value="${esc(me.username)}" placeholder="@юзернейм" autocapitalize="off"><div class="err" id="pe"></div><button class="btn" id="psv">Сохранить</button><button class="btn s" id="psh">Поделиться профилем</button><button class="btn s d" id="plo" style="color:#fff">Выйти</button></div>`;
+  $('#psv').onclick=async()=>{try{const r=await call('profile',{name:$('#pn').value,username:$('#pu').value});me=r.me;toast('Сохранено');ren()}catch(e){$('#pe').textContent=e}};$('#psh').onclick=()=>share('@'+me.username);$('#plo').onclick=()=>{localStorage.removeItem('kg_tok');location.reload()}}}
+$('#view').onclick=e=>{const r=e.target.closest('[data-c],[data-u],[data-p]');if(!r)return;const d=r.dataset;
+ if(d.c)openChat(chats.find(c=>c.id==d.c));else if(d.u)openDm(d.u);else if(d.p)openChat(JSON.parse(d.p))};
+async function doSearch(q){const r=await call('search',{q}).catch(()=>null);if(!r||tab!='search')return;
+ $('#res').innerHTML=!q.trim()?'':(r.users.map(u=>`<div class="row" data-u="${esc(u.username)}">${av(u.name,u.id)}<div class="mid"><b>${esc(u.name)}</b><div class="pv">@${esc(u.username)}</div></div></div>`).join('')+r.chats.map(c=>`<div class="row" data-p='${esc(JSON.stringify(c))}'>${av(c.title,c.id)}<div class="mid"><b>${ico(c)}${esc(c.title)}</b><div class="pv">@${esc(c.handle)} · ${c.n} уч.</div></div></div>`).join('')||`<div class="empty">Ничего не найдено</div>`)||`<div class="empty">Ничего не найдено</div>`}
+async function openDm(u){try{const r=await call('openDm',{username:u});chats=r.chats;openChat(chats.find(c=>c.id==r.chat))}catch(e){toast(e)}}
+async function doCreate(){try{const r=await call('create',{type:ckind,title:$('#cn').value,handle:$('#ch').value});chats=r.chats;go('chats');openChat(chats.find(c=>c.id==r.chat))}catch(e){$('#ce').textContent=e}}
+const mem=()=>chats.some(c=>c.id==cur.id);
+function foot(){const f=$('#foot');
+ if(!mem()){f.innerHTML=`<button class="btn" style="margin:0" id="jn">Вступить</button>`;$('#jn').onclick=async()=>{try{const r=await call('join',{chat:cur.id});chats=r.chats;cur=chats.find(c=>c.id==r.chat);foot();hdr();upd()}catch(e){toast(e)}}}
+ else if(cur.type=='channel'&&cur.role!='owner')f.textContent='Писать в канал может только владелец';
+ else{f.innerHTML=`<input id="inp" placeholder="Сообщение" autocomplete="off"><button id="sb" aria-label="Отправить"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>`;$('#sb').onclick=send;$('#inp').onkeydown=e=>{if(e.key=='Enter')send()}}}
+function hdr(){$('#chav').innerHTML=av(cur.title,cur.peer||cur.id);$('#chav .av').style.cssText+='width:40px;height:40px;font-size:16px';$('#ct').textContent=ico(cur)+cur.title;
+ $('#cs').textContent=cur.type=='dm'?'@'+cur.handle:(cur.handle?'@'+cur.handle+' · ':'')+cur.n+' уч.';$('#csh').hidden=!cur.handle;$('#cmn').hidden=!mem()}
+async function openChat(c){if(!c)return;cur=c;hdr();foot();$('#msgs').innerHTML='';$('#chat').classList.add('on');
+ try{const r=await call('history',{chat:c.id});$('#msgs').innerHTML=r.msgs.map(bub).join('');bot(1);markRead(r.msgs)}catch(e){toast(e)}}
+async function refreshCur(){const c=chats.find(x=>x.id==cur.id);if(c)cur=c;try{const r=await call('history',{chat:cur.id});$('#msgs').innerHTML=r.msgs.map(bub).join('');bot(1);markRead(r.msgs)}catch(e){}}
+function bub(m){const mine=m.uid==me.id;return `<div class="m ${mine?'me':''}">${cur.type!='dm'&&!mine?`<b>${esc(m.name)}</b>`:''}${esc(m.text)}<small>${fmt(m.ts)}</small></div>`}
+function bot(f){const m=$('#msgs');if(f||m.scrollHeight-m.scrollTop-m.clientHeight<160)m.scrollTo({top:m.scrollHeight,behavior:f?'auto':'smooth'})}
+function markRead(ms){if(!mem()||!ms.length)return;const c=chats.find(x=>x.id==cur.id);call('read',{chat:cur.id,id:ms[ms.length-1].id}).catch(()=>0);if(c){c.unread=0;upd();if(tab=='chats')ren()}}
+async function send(){const i=$('#inp'),t=i.value.trim();if(!t)return;i.value='';try{await call('send',{chat:cur.id,text:t})}catch(e){toast(e);i.value=t}}
+function onEv(m){if(m.ev!='msg')return;const c=chats.find(x=>x.id==m.chat);
+ if(!c){call('chats').then(r=>{chats=r.chats;upd();if(tab=='chats')ren()});return}
+ c.last={id:m.msg.id,text:m.msg.text,ts:m.msg.ts,name:m.msg.name};chats.sort((a,b)=>((b.last&&b.last.ts)||b.ts)-((a.last&&a.last.ts)||a.ts));
+ const open=cur&&cur.id==c.id&&$('#chat').classList.contains('on');
+ if(open){$('#msgs').insertAdjacentHTML('beforeend',bub(m.msg));bot(m.msg.uid==me.id);markRead([m.msg])}else if(m.msg.uid!=me.id)c.unread++;
+ upd();if(tab=='chats')ren()}
+$('#bk').onclick=()=>{$('#chat').classList.remove('on');cur=null};
+$('#csh').onclick=()=>share('@'+cur.handle);
+$('#cmn').onclick=async()=>{if(!confirm('Покинуть чат?'))return;try{const r=await call('leave',{chat:cur.id});chats=r.chats;$('#bk').click();upd();ren()}catch(e){toast(e)}};
+async function share(h){const url=location.origin+'/#'+h;try{if(navigator.share)await navigator.share({title:'KlepaGram',text:'Я в KlepaGram '+h,url});else{await navigator.clipboard.writeText(url);toast('Ссылка скопирована')}}catch(e){}}
+async function openLink(){const h=location.hash.replace(/^#@?/,'').toLowerCase();if(!h)return;history.replaceState(null,'',location.pathname);
+ const r=await call('search',{q:h}).catch(()=>null);if(!r)return;const u=r.users.find(x=>x.username==h),c=r.chats.find(x=>x.handle==h);
+ if(u)openDm(u.username);else if(c)openChat(chats.find(x=>x.id==c.id)||c);else toast('Не найдено: @'+h)}
+$('#aseg').onclick=e=>{const b=e.target.closest('button');if(!b)return;mode=b.dataset.m;$('#aseg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b));$('#an').hidden=mode!='register';$('#ago').textContent=mode=='login'?'Войти':'Создать аккаунт';$('#ae').textContent=''};
+async function doAuth(){try{await auth(mode,{name:$('#an').value,username:$('#au').value,password:$('#ap').value})}catch(e){$('#ae').textContent=e}}
+$('#ago').onclick=doAuth;$('#ap').onkeydown=e=>{if(e.key=='Enter')doAuth()};
+conn();
+</script></body></html>
