@@ -134,4 +134,4 @@ $('#aseg').onclick=e=>{const b=e.target.closest('button');if(!b)return;mode=b.da
 async function doAuth(){try{await auth(mode,{name:$('#an').value,username:$('#au').value,password:$('#ap').value})}catch(e){$('#ae').textContent=e}}
 $('#ago').onclick=doAuth;$('#ap').onkeydown=e=>{if(e.key=='Enter')doAuth()};
 conn();
-</script></body></html>
+</script><script src="/extra.js"></script></body></html>
